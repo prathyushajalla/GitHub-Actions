@@ -1,0 +1,7 @@
+name: 01 Building Blocks
+on: push
+jobs:
+  My-First-Job:
+    runs-on: macos-14
+    steps:
+      - run: echo "Hello World!"
