@@ -1,0 +1,8 @@
+name: Caller Workflow
+on:
+    push:
+        branches:
+            - main
+jobs:
+    call-workflow:
+        uses: ./.github/workflows/01-Building-Blocks.yml
