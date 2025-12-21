@@ -2,10 +2,14 @@ name: 01 Building Blocks
 on: push
 jobs:
   My-First-Job:
+    name: First Job
     runs-on: macos-14
     steps:
       - run: echo "Hello World!"
   My-Second-Job:
+    name: Second Job
+    needs:
+      - My-First-Job
     runs-on: ubuntu-latest
     steps:
       - run: echo "Goodbye World!"
