@@ -1,7 +1,7 @@
 name: 01 Building Blocks
 on:
   workflow_call:
-    branches:
+    branch:
       - main
 jobs:
   My-First-Job:
