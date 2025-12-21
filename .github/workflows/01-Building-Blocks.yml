@@ -5,11 +5,20 @@ jobs:
     name: First Job
     runs-on: macos-14
     steps:
-      - run: echo "Hello World!"
+      - name:
+          Successful Job:
+            run: echo "Hello World!"
   My-Second-Job:
     name: Second Job
     needs:
       - My-First-Job
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Goodbye World!"
+      - name:
+          Failed step:
+            run: |
+              - echo "I will fail"
+              - exit 1
+      - name:
+          Say Goodbye:
+            run: echo "I will pass"
