@@ -5,3 +5,7 @@ jobs:
     runs-on: macos-14
     steps:
       - run: echo "Hello World!"
+  My-Second-Job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Goodbye World!"
