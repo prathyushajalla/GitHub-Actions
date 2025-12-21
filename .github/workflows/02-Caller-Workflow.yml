@@ -1,8 +1,5 @@
 name: Caller Workflow
-on:
-    push:
-        branches:
-            - main
+on: workflow_dispatch
 jobs:
-    call-workflow:
-        uses: ./.github/workflows/01-Building-Blocks.yml
+  call-workflow:
+    uses: ./.github/workflows/01-Building-Blocks.yml
