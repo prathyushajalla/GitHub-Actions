@@ -16,6 +16,6 @@ jobs:
       - name: Echo Fail
         run: |
            echo "I will fail"
-           exit 1
+           exit 0
       - name: Echo Pass
         run: echo "I will pass"
