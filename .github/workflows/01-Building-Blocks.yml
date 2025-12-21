@@ -1,21 +1,23 @@
 name: 01 Building Blocks
-on: workflow_call
+on:
+  workflow_call:
+    branches:
+      - main
 jobs:
   My-First-Job:
     name: First Job
     runs-on: macos-14
     steps:
-      - name: Echo Hello World
-        run: echo "Hello World!"
+      - name: Checkout
+        uses: actions/checkout@v6.0.1
+      - run: echo "Hello World!"
   My-Second-Job:
     name: Second Job
     needs:
       - My-First-Job
     runs-on: ubuntu-latest
     steps:
-      - name: Echo Fail
+      - name: List Files in the Repository
         run: |
-           echo "I will fail"
-           exit 0
-      - name: Echo Pass
-        run: echo "I will pass"
+           echo "The Repository ${{github.repository}} contains the following files"
+           tree
