@@ -2,4 +2,4 @@ name: Caller Workflow
 on: workflow_dispatch
 jobs:
   call-workflow:
-    uses: ./.github/workflows/01-Building-Blocks.yml
+    uses: ./.github/workflows/01-building-blocks.yml
