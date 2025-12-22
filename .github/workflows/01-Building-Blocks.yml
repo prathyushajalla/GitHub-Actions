@@ -34,7 +34,6 @@ jobs:
           echo "Hello ${{vars.WHO_TO_GREET}} from ${{github.actor}}."
           sec=$(echo ${{secrets.MY_SECRET}} | sed 's/./& /g')
           echo "My Secret is '$sec'."
-
   Production:
     name: Production Environments
     runs-on: ubuntu-latest
