@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Echo Variable
         run:
-          echo "Hello ${{vars.WHO_TO_GREET}} from ${{github.actor}}
+          echo "Hello ${{vars.WHO_TO_GREET}} from ${{github.actor}}"
       - name: Echo Secrets
         run:
-          echo "My Secret is ${{secrets.MY_SECRET}}
+          echo "My Secret is ${{secrets.MY_SECRET}}"
