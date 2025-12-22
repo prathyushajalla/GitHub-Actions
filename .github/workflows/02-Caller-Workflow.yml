@@ -4,6 +4,6 @@ jobs:
   call-workflow:
     permissions:
       contents: read
-      pull-requests: write
+      pull-requests: none
     uses: ./.github/workflows/01-building-blocks.yml
     secrets: inherit
