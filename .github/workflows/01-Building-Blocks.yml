@@ -22,3 +22,13 @@ jobs:
         run: |
            echo "The Repository ${{github.repository}} contains the following files"
            tree
+  My-Third-Job:
+    name: Print Variables & Secrets
+    runs-on: macos-latest
+    steps:
+      - name: Echo Variable
+        run:
+          echo "Hello ${{vars.WHO_TO_GREET}} from ${{github.actor}}
+      - name: Echo Secrets
+        run:
+          echo "My Secret is ${{secrets.MY_SECRET}}
