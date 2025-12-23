@@ -20,7 +20,7 @@ jobs:
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v3.1.2
         with:
-          terraform_version: '1.7.0'
+          terraform_version: 'latest'
 
       - name: Verfiy Terraform Binary
         run: terraform version
