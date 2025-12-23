@@ -13,8 +13,6 @@ jobs:
       - name: HashiCorp - Setup Terraform
       - uses: actions/checkout@v6.0.1
       - uses: hashicorp/setup-terraform@v3.1.2
-      - run: echo "Hello World!"
-      - uses: hashicorp/setup-terraform@v3
       - run: terraform init
       - id: plan
         run: terraform plan -no-color
