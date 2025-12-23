@@ -1,7 +1,7 @@
 name: 01 Building Blocks
 run-name: Terraform Build Testing by ${{ github.actor }} 🚀
 on:
-  workflow_call:
+  workflow_dispatch:
   #push:
    # branches:
    #   - main
