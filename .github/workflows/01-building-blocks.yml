@@ -9,6 +9,10 @@ jobs:
   Setup_Terraform:
     name: Terraform Setup
     runs-on: macos-14
+    #This tells every 'run' step to start in the terraform folder
+    defaults:
+      run:
+        working-directory: ./Terraform
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -22,6 +26,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color
+        working-directory: ./
 
       - name: Output Results
         run: |
