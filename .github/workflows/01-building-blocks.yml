@@ -3,8 +3,8 @@ run-name: Testing Build by ${{ github.actor }} 🚀
 on:
   workflow_call:
   #push:
-    branches:
-      - main
+   # branches:
+   #   - main
 jobs:
   My-First-Job:
     name: First Job
