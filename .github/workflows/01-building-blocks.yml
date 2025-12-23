@@ -19,21 +19,23 @@ jobs:
 
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v3.1.2
+        with:
+          terraform_version: '1.7.0'
 
-      - name: Terraform Init
-        run: terraform init
+      - name: Verfiy Terraform Binary
+        run: terraform version
 
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color
-        working-directory: ./
-
-      - name: Output Results
-        run: |
-          echo ${{ steps.plan.outputs.stdout }}
-          echo ${{ steps.plan.outputs.stderr }}
-          echo ${{ steps.plan.outputs.exitcode }}
-
+#      - name: Terraform Plan
+#        id: plan
+#        run: terraform plan -no-color
+#        working-directory: ./
+#
+#      - name: Output Results
+#        run: |
+#          echo ${{ steps.plan.outputs.stdout }}
+#          echo ${{ steps.plan.outputs.stderr }}
+#          echo ${{ steps.plan.outputs.exitcode }}
+#
 #  Test:
 #    name: Test Environments
 #    runs-on: ubuntu-latest
