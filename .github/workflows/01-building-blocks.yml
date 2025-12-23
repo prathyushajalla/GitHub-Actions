@@ -10,15 +10,24 @@ jobs:
     name: Terraform Setup
     runs-on: macos-14
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: HashiCorp - Setup Terraform
-      - uses: actions/checkout@v6.0.1
-      - uses: hashicorp/setup-terraform@v3.1.2
-      - run: terraform init
-      - id: plan
+        uses: hashicorp/setup-terraform@v3.1.2
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        id: plan
         run: terraform plan -no-color
-      - run: echo ${{ steps.plan.outputs.stdout }}
-      - run: echo ${{ steps.plan.outputs.stderr }}
-      - run: echo ${{ steps.plan.outputs.exitcode }}
+
+      - name: Output Results
+        run: |
+          echo ${{ steps.plan.outputs.stdout }}
+          echo ${{ steps.plan.outputs.stderr }}
+          echo ${{ steps.plan.outputs.exitcode }}
 
 #  Test:
 #    name: Test Environments
