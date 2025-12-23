@@ -6,7 +6,7 @@ on:
    # branches:
    #   - main
 jobs:
-  Setup Terraform:
+  Setup_Terraform:
     name: Terraform Setup
     runs-on: macos-14
     steps:
