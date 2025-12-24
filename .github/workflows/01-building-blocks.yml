@@ -92,10 +92,14 @@ jobs:
 
        - name: Download Plan File
          if: github.event.inputs.terraform_action == 'apply'
-         uses: actions/download-artifact@v4
+        # Use dawidd6/action-download-artifact to find artifacts from PREVIOUS runs
+         uses: dawidd6/action-download-artifact@v6
          with:
-           name: terraform-plan
-           path: .Terraform/Development/${{ github.event.inputs.resource_folder }}
+           workflow: 01-building-blocks.yml
+           name_is_regexp: false
+           # Search for the latest successful plan artifact in the repo
+           search_artifacts: true
+           path: Terraform/Development/${{ github.event.inputs.resource_folder }}
 
        - name: Terraform Apply
         #Only run this on the main branch to prevent accidental deployments from PRs
