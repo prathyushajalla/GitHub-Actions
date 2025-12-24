@@ -1,5 +1,5 @@
-name: 01 Building Blocks
-run-name: Terraform Build Testing by ${{ github.actor }} 🚀
+name: Azure Infrastructure Deployment using Terraform
+run-name: Azure Infrastructure Deployment by ${{ github.actor }} 🚀
 on:
   workflow_dispatch:
   #push:
@@ -12,55 +12,43 @@ permissions:
   contents: read
 jobs:
   Setup_Terraform:
-    name: Terraform Setup
     runs-on: ubuntu-latest
     #This tells every 'run' step to start in the terraform folder
     defaults:
       run:
         working-directory: ./Terraform
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true
+      ARM_RESOURCE_PROVIDER_REGISTRATIONS: none # Faster execution
+      ARM_PROVIDER_ENHANCED_VALIDATION: false    # Faster execution
 
+    steps:
+       - uses: actions/checkout@v4
+       - uses: azure/login@v2
 #1. Log into Azure using your OIDC secrets
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
+         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: HashiCorp - Setup Terraform
-        uses: hashicorp/setup-terraform@v3.1.2
-        with:
-          terraform_version: 'latest'
+       - name: HashiCorp - Setup Terraform
+         uses: hashicorp/setup-terraform@v3.1.2
 
 # 2. Run Terraform commands with Azure Environment Variables
-      - name: Terraform Init
-        run: terraform init
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          ARM_USE_OIDC: true
+       - name: Terraform Init
+         run: terraform init
 
-      - name: Terraform Plan
-        run: terraform plan
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          ARM_USE_OIDC: true
+       - name: Terraform Plan
+         run: terraform plan - out=tfplan
 
-      - name: Terraform Apply
+       - name: Terraform Apply
         #Only run this on the main branch to prevent accidental deployments from PRs
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-        run: terraform apply -auto-approve -input=false
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          ARM_USE_OIDC: true
+         if: github.ref == 'refs/heads/main'
+         run: terraform apply -auto-approve -input=false
+
 #      - name: Terraform Plan
 #        id: plan
 #        run: terraform plan -no-color
