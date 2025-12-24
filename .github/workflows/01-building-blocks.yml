@@ -77,8 +77,9 @@ jobs:
        - name: Terraform Plan
          if: github.event.inputs.terraform_action == 'plan'
          run: |
-          terraform init 
-          terraform plan -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars" -out=tfplan 
+         # Dynamically set the state file key (e.g., dev-use.tfstate)
+          terraform init -backend-config="key=${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfstate"
+          terraform plan -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars" -out=tfplan
 
        - name: Save Plan File
          if: github.event.inputs.terraform_action == 'plan'
@@ -96,6 +97,7 @@ jobs:
            workflow: 01-building-blocks.yml
            # This tells GitHub to look at previous runs, not just the current one
            search_artifacts: true
+           workflow_conclusion: ""
            # Use the same path as your working-directory
            path: Terraform/Development/${{ github.event.inputs.resource_folder }}
 
@@ -103,5 +105,6 @@ jobs:
         #Only run this on the main branch to prevent accidental deployments from PRs
          if: github.ref == 'refs/heads/main' && github.event.inputs.terraform_action == 'apply'
          run: |
-          terraform init
+        # Use the same dynamic key during Apply
+          terraform init -backend-config="key=${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfstate"
           terraform apply -auto-approve tfplan
