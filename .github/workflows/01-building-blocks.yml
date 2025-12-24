@@ -15,6 +15,14 @@ on:
           - Dev
           - Non-prod
           - Prod
+      terraform_action:
+        description: 'Select Terraform Action'
+        required: true
+        type: choice
+        options:
+          - fmt
+          - plan
+          - apply
 
 # REQUIRED for OIDC: This allows the action to request a JWT token from GitHub
 permissions:
