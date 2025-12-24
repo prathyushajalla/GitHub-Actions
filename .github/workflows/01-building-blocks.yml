@@ -5,16 +5,16 @@ on:
   #push:
    # branches:
    #   - main
-  inputs:
-    environment:
-      description: 'Select the Environment'
-      required: true
-      default: 'Dev'
-      type: choice
-      options:
-        - Dev
-        - Non-prod
-        - Prod
+    inputs:
+      environment:
+        description: 'Select the Environment'
+        required: true
+        default: 'Dev'
+        type: choice
+        options:
+          - Dev
+          - Non-prod
+          - Prod
 
 # REQUIRED for OIDC: This allows the action to request a JWT token from GitHub
 permissions:
