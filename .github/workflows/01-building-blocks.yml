@@ -73,23 +73,36 @@ jobs:
          uses: hashicorp/setup-terraform@v3.1.2
 
 # 2. Run Terraform commands with Azure Environment Variables
-       - name: Terraform Init
-         run: terraform init
-
        - name: Terraform Format
          if: github.event.inputs.terraform_action == 'fmt'
-         run: terraform fmt
+         run: terraform fmt -check -recursive
 
        - name: Terraform Plan
          if: github.event.inputs.terraform_action == 'plan'
          run: |
-          terraform plan -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars" 
+          terraform init 
+          terraform plan -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars" -out=tfplan 
+
+       - name: Save Plan File
+         if: github.event.inputs.terraform_action == 'plan'
+         uses: actions/upload-artifact@v4
+         with:
+           name: terraform-plan
+           path: ./${{ github.event.inputs.resource_folder }}/tfplan
+
+       - name: Download Plan File
+         if: github.event.inputs.terraform_action == 'apply'
+         uses: actions/download-artifact@v4
+         with:
+           name: terraform-plan
 
        - name: Terraform Apply
         #Only run this on the main branch to prevent accidental deployments from PRs
          if: github.ref == 'refs/heads/main' && github.event.inputs.terraform_action == 'apply'
          run: |
-          terraform apply -auto-approve -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars"
+          terraform init
+          terraform apply -auto-approve tfplan
+#          terraform apply -auto-approve -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars"
 
 #      - name: Terraform Plan
 #        id: plan
