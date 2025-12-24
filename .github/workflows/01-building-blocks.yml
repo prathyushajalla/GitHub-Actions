@@ -95,10 +95,11 @@ jobs:
         # Use dawidd6/action-download-artifact to find artifacts from PREVIOUS runs
          uses: dawidd6/action-download-artifact@v6
          with:
+           name: terraform-plan
            workflow: 01-building-blocks.yml
-           name_is_regexp: false
-           # Search for the latest successful plan artifact in the repo
+           # This tells GitHub to look at previous runs, not just the current one
            search_artifacts: true
+           # Use the same path as your working-directory
            path: Terraform/Development/${{ github.event.inputs.resource_folder }}
 
        - name: Terraform Apply
