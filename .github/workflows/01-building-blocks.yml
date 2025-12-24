@@ -77,7 +77,7 @@ jobs:
        - name: Terraform Plan
          if: github.event.inputs.terraform_action == 'plan'
          run: |
-         # Dynamically set the state file key (e.g., dev-use.tfstate)
+      # Dynamically set the state file key (e.g., dev-use.tfstate)
           terraform init -backend-config="key=${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfstate"
           terraform plan -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars" -out=tfplan
 
