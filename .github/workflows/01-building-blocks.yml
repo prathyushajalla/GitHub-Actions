@@ -6,6 +6,14 @@ on:
    # branches:
    #   - main
     inputs:
+      resource_folder:
+        description: 'Select Resource Folder'
+        required: true
+        type: choice
+        options:
+          - Resource-Group
+          - Virtual-Network
+
       environment:
         description: 'Select the Environment'
         required: true
@@ -13,8 +21,17 @@ on:
         type: choice
         options:
           - Dev
-          - Non-prod
           - Prod
+
+      region:
+        description: 'Select a Region'
+        required: true
+        type: choice
+        options:
+          - eastus
+          - eastus2
+          - centralus
+
       terraform_action:
         description: 'Select Terraform Action'
         required: true
@@ -34,7 +51,7 @@ jobs:
     #This tells every 'run' step to start in the terraform folder
     defaults:
       run:
-        working-directory: ./Terraform
+        working-directory: ./Terraform/Development/${{ github.event.inputs.resource_folder }}
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -59,13 +76,20 @@ jobs:
        - name: Terraform Init
          run: terraform init
 
+       - name: Terraform Format
+         if: github.event.inputs.terraform_action == 'fmt'
+         run: terraform fmt
+
        - name: Terraform Plan
-         run: terraform plan -out=tfplan
+         if: github.event.inputs.terraform_action == 'plan'
+         run: |
+          terraform plan -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars" 
 
        - name: Terraform Apply
         #Only run this on the main branch to prevent accidental deployments from PRs
-         if: github.ref == 'refs/heads/main'
-         run: terraform apply -auto-approve tfplan
+         if: github.ref == 'refs/heads/main' && github.event.inputs.terraform_action == 'apply'
+         run: |
+          terraform apply -auto-approve -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars"
 
 #      - name: Terraform Plan
 #        id: plan
