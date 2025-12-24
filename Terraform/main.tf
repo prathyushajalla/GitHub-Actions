@@ -50,6 +50,11 @@ resource "azurerm_virtual_network" "vnet" {
     security_group   = azurerm_network_security_group.NSG.id
   }
 
+  subnet {
+    name             = "subnet3"
+    address_prefixes = ["10.0.3.0/24"]
+    security_group   = azurerm_network_security_group.NSG.id
+  }
   tags = {
     environment = "Development"
   }
