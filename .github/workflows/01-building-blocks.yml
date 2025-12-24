@@ -54,7 +54,7 @@ jobs:
 
       - name: Terraform Apply
         #Only run this on the main branch to prevent accidental deployments from PRs
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         run: terraform apply -auto-approve -input=false
 #      - name: Terraform Plan
 #        id: plan
