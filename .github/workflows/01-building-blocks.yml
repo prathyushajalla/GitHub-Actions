@@ -2,9 +2,6 @@ name: Azure Infrastructure Deployment using Terraform
 run-name: Azure Infrastructure Deployment by ${{ github.actor }} 🚀
 on:
   workflow_dispatch:
-  #push:
-   # branches:
-   #   - main
     inputs:
       resource_folder:
         description: 'Select Resource Folder'
@@ -108,75 +105,3 @@ jobs:
          run: |
           terraform init
           terraform apply -auto-approve tfplan
-#          terraform apply -auto-approve -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars"
-
-#      - name: Terraform Plan
-#        id: plan
-#        run: terraform plan -no-color
-#        working-directory: ./
-#
-#      - name: Output Results
-#        run: |
-#          echo ${{ steps.plan.outputs.stdout }}
-#          echo ${{ steps.plan.outputs.stderr }}
-#          echo ${{ steps.plan.outputs.exitcode }}
-#
-#  Test:
-#    name: Test Environments
-#    runs-on: ubuntu-latest
-#    environment: Test
-#    needs: Setup Terraform
-#    steps:
-#      - run: |
-#          echo "Hello ${{vars.WHO_TO_GREET}} from ${{github.actor}}."
-#          sec=$(echo ${{secrets.MY_SECRET}} | sed 's/./& /g')
-#          echo "My Secret is '$sec'."
-#
-#  Load-Test:
-#    name: Load-Test Environments
-#    runs-on: ubuntu-latest
-#    environment: Load-Test
-#    needs: My-First-Job
-#    steps:
-#      - run: |
-#          echo "Hello ${{vars.WHO_TO_GREET}} from ${{github.actor}}."
-#          sec=$(echo ${{secrets.MY_SECRET}} | sed 's/./& /g')
-#          echo "My Secret is '$sec'."
-#  Production:
-#    name: Production Environments
-#    runs-on: ubuntu-latest
-#    permissions:
-#      contents: read
-#      pull-requests: write
-#    environment:
-#      name: Production
-#      url: https://writeabout.net
-#    needs: [Test, Load-Test]
-#    steps:
-#      - uses: actions/checkout@v4.1.0
-#      - uses: devops-actions/actionlint@v0.1.2
-#      - run: |
-#          echo "Hello ${{vars.WHO_TO_GREET}} from ${{github.actor}}."
-#          sec=$(echo ${{secrets.MY_SECRET}} | sed 's/./& /g')
-#          echo "My Secret is '$sec'."
-#
-#  My-Second-Job:
-#    name: Second Job
-#    needs:
-#      - My-First-Job
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: List Files in the Repository
-#        run: |
-#           echo "The Repository ${{github.repository}} contains the following files"
-#           tree
-#  My-Third-Job:
-#    name: Print Variables & Secrets
-#    runs-on: macos-latest
-#    steps:
-#      - name: Echo Variable
-#        run:
-#          echo "Hello ${{vars.WHO_TO_GREET}} from ${{github.actor}}"
-#      - name: Echo Secrets
-#        run:
-#          echo "My Secret is ${{secrets.MY_SECRET}}"
