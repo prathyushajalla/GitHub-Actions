@@ -88,13 +88,14 @@ jobs:
          uses: actions/upload-artifact@v4
          with:
            name: terraform-plan
-           path: ./${{ github.event.inputs.resource_folder }}/tfplan
+           path: .Terraform/Development/${{ github.event.inputs.resource_folder }}/tfplan
 
        - name: Download Plan File
          if: github.event.inputs.terraform_action == 'apply'
          uses: actions/download-artifact@v4
          with:
            name: terraform-plan
+           path: .Terraform/Development/${{ github.event.inputs.resource_folder }}
 
        - name: Terraform Apply
         #Only run this on the main branch to prevent accidental deployments from PRs
