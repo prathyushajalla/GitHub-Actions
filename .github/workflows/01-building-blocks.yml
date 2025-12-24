@@ -88,8 +88,7 @@ jobs:
            path: Terraform/Development/${{ github.event.inputs.resource_folder }}/tfplan
 
        - name: Download Plan File
-         if: github.event.inputs.terraform_action == 'apply'
-        # Use dawidd6/action-download-artifact to find artifacts from PREVIOUS runs
+         if: github.event.inputs.terraform_action == 'apply' # Use dawidd6/action-download-artifact to find artifacts from PREVIOUS runs
          uses: dawidd6/action-download-artifact@v6
          with:
            name: terraform-plan
@@ -103,7 +102,6 @@ jobs:
        - name: Terraform Apply
         #Only run this on the main branch to prevent accidental deployments from PRs
          if: github.ref == 'refs/heads/main' && github.event.inputs.terraform_action == 'apply'
-         run: |
-        # Use the same dynamic key during Apply
+         run: |         # Use the same dynamic key during Apply
           terraform init -backend-config="key=${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfstate"
           terraform apply -auto-approve tfplan
