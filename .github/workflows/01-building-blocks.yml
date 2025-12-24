@@ -52,6 +52,10 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           ARM_USE_OIDC: true
 
+      - name: Terraform Apply
+        #Only run this on the main branch to prevent accidental deployments from PRs
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false
 #      - name: Terraform Plan
 #        id: plan
 #        run: terraform plan -no-color
