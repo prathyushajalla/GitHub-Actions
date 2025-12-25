@@ -42,7 +42,7 @@ on:
 # REQUIRED for OIDC: This allows the action to request a JWT token from GitHub
 permissions:
   id-token: write
-  contents: read
+  contents: write
 jobs:
   Setup_Terraform:
     runs-on: ubuntu-latest
@@ -73,13 +73,19 @@ jobs:
 #2. Run Terraform commands with Azure Environment Variables
        - name: Terraform Format
          if: github.event.inputs.terraform_action == 'fmt'
-         run: terraform fmt -check -recursive
+         run: terraform fmt -recursive
 
        - name: Terraform Plan
          if: github.event.inputs.terraform_action == 'plan'
          run: |
           terraform init -backend-config="key=${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfstate"
           terraform plan -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars" -out=tfplan
+
+       - name: Commit Formatting Fixes
+         if: github.event.inputs.terraform_action == 'fmt'
+         uses: stefanzweifel/git-auto-commit-action@v5
+         with:
+          commit_message: "style: automated terraform fmt"
 
        - name: Save Plan File
          if: github.event.inputs.terraform_action == 'plan'
