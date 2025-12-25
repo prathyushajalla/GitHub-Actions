@@ -1,2 +1,2 @@
-rgname = "Dev-USE2-RG"
+rgname   = "Dev-USE2-RG"
 location = "eastus2"

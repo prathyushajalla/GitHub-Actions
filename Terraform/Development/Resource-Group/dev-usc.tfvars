@@ -1,2 +1,2 @@
-rgname = "Dev-USC-RG"
+rgname   = "Dev-USC-RG"
 location = "centralus"
