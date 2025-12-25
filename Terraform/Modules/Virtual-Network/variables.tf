@@ -1,0 +1,10 @@
+variable "nsgname" {}
+variable "location" {}
+variable "rgname" {}
+variable "security_rule_name" {}
+variable "vnet_name" {}
+variable "vnet_address_space" {}
+variable "subnet_name" {}
+variable "subnet_name1" {}
+variable "subnet_address" {}
+variable "subnet_address1" {}
