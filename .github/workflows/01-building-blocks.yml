@@ -35,6 +35,7 @@ on:
         type: choice
         options:
           - fmt
+          - validate
           - plan
           - apply
           - destroy
@@ -74,6 +75,10 @@ jobs:
        - name: Terraform Format
          if: github.event.inputs.terraform_action == 'fmt'
          run: terraform fmt -recursive
+
+       - name: Terraform Validate
+         if: github.event.inputs.terraform_action == 'validate'
+         run: terraform validate
 
        - name: Terraform Plan
          if: github.event.inputs.terraform_action == 'plan'
