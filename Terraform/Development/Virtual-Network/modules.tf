@@ -1,5 +1,5 @@
 module "vir_net" {
-  source  = "../../Modules/Virtual-Network/"
+  source              = "../../Modules/Virtual-Network/"
 
   nsgname             = var.nsgname
   location            = data.azurerm_resource_group.RG.location
