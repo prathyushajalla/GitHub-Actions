@@ -1,0 +1,17 @@
+---
+- name: Audit Azure Network Security
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Get NSG facts for Central US
+      azure.azcollection.azure_rm_securitygroup_info:
+        resource_group: "Dev-USC-RG"
+      register: nsg_info
+
+    - name: List all 'Allow' rules from the Internet
+      debug:
+        msg: "WARNING: {{ item.name }} allows open access from {{ item.source_address_prefix }}"
+      loop: "{{ nsg_info.security_groups[0].rules }}"
+      when:
+        - item.access == 'Allow'
+        - item.source_address_prefix == '*'
