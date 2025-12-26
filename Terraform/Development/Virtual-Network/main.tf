@@ -1,3 +1,8 @@
+moved {
+  from = "module.rg.azurerm_resource_group.RG"
+  to   = "data.azurerm_resource_group.RG"
+}
+
 terraform {
   required_providers {
     azurerm = {
