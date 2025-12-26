@@ -11,7 +11,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Azure Python SDK
-        run: pip install azure-cli azure-mgmt-resource azure-mgmt-network azure-identity
+        run: | # First, install the collection to get access to its requirements file
+          ansible-galaxy collection install azure.azcollection
+        # Install the EXACT requirements listed by the collection authors
+          pip install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
 
       - name: Install Azure Collection
         run: ansible-galaxy collection install azure.azcollection
