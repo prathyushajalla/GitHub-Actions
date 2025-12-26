@@ -1,4 +1,5 @@
 nsgname            = "dev-eastus-nsg"
+rgname             = "Dev-USE-RG"
 security_rule_name = "dev-eastus-sg-rule"
 vnet_name          = "dev-eastus-vnet"
 vnet_address_space = "[10.0.0.0/16]"

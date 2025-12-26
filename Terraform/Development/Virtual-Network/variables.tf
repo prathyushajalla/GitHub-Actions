@@ -2,6 +2,10 @@ variable "nsgname" {
   type = string
 }
 
+variable "rgname" {
+  type = string
+}
+
 variable "security_rule_name" {
   type = string
 }
