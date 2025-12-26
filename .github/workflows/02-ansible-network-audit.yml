@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Azure Python SDK
-        run: pip install 'ansible[azure]'
+        run: pip install azure-cli azure-mgmt-resource azure-mgmt-network azure-identity
 
       - name: Install Azure Collection
         run: ansible-galaxy collection install azure.azcollection
