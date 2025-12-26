@@ -89,6 +89,9 @@ jobs:
          if: github.event.inputs.terraform_action == 'validate'
          run: terraform validate
 
+       - name: Remove Orphaned State
+         run: terraform state rm module.rg.azurerm_resource_group.RG || true
+
        - name: Terraform Plan
          if: github.event.inputs.terraform_action == 'plan'
          run: |
