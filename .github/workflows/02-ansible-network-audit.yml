@@ -1,4 +1,4 @@
-name: 02-ansible-network-audit.yml
+name: Ansible Network Security Audits
 run-name: Ansible Security Audit Deployment by ${{ github.actor }} 🚀
 on:
   workflow_dispatch:
