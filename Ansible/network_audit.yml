@@ -2,6 +2,7 @@
 - name: Audit Azure Network Security
   hosts: localhost
   connection: local
+  gather_facts: no
   tasks:
     - name: Get NSG facts for Central US
       azure.azcollection.azure_rm_securitygroup_info:
