@@ -92,7 +92,7 @@ jobs:
        - name: Terraform Plan
          if: github.event.inputs.terraform_action == 'plan'
          run: |
-          terraform plan -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars" -out=tfplan
+          terraform plan -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars" -out=tfplan -input=false
 
        - name: Save Plan File
          if: github.event.inputs.terraform_action == 'plan'
