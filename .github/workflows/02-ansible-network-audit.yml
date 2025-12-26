@@ -12,14 +12,16 @@ jobs:
 
       - name: Install Azure Python SDK
         run: |
-          ansible-galaxy collection install azure.azcollection
-          pip install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
+          ansible-galaxy collection install azure.azcollection -p ./collections
+          pip install -r ./collections/ansible_collections/azure/azcollection/requirements-azure.txt
 
       - name: Install Azure Collection
         run: ansible-galaxy collection install azure.azcollection
 
       - name: Execute Network Audit Playbook
-        run: ansible-playbook ./Ansible/network_audit.yml -e "ansible_python_interpreter=$(which python3)"
+        run: |
+          export ANSIBLE_COLLECTIONS_PATH=./collections
+          ansible-playbook ./Ansible/network_audit.yml -e "ansible_python_interpreter=$(which python3)"
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
