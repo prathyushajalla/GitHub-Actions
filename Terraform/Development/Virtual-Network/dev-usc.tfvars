@@ -1,0 +1,9 @@
+nsgname            = "dev-centralus-nsg"
+rgname             = "Dev-USC-RG"
+security_rule_name = "dev-centralus-sg-rule"
+vnet_name          = "dev-centralus-vnet"
+vnet_address_space = ["12.0.0.0/16"]
+subnet_name        = "dev-centralus-subnet"
+subnet_address     = ["12.0.1.0/24"]
+subnet_name1       = "dev-centralus-subnet1"
+subnet_address1    = ["12.0.2.0/24"]
