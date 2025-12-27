@@ -89,27 +89,38 @@ jobs:
        - name: State Hygiene - Remove Orphans (Permanent Fix)
          if: github.event.inputs.terraform_action == 'plan' || github.event.inputs.terraform_action == 'apply'
          run: |
-             ORPHANS=$(terraform state list 2>/dev/null | grep -E "module\.vir_net\." || true)
+           ORPHANS=$(terraform state list 2>/dev/null | grep -E "module\.vir_net\." || true)
 
-             if [ ! -z "$ORPHANS" ]; then
-               echo "Found orphans: $ORPHANS"
-               echo "Cleaning state references (resources untouched)..."
-             
-               terraform state rm 'module.vir_net.azurerm_subnet.snet' || true
-               terraform state rm 'module.vir_net.azurerm_subnet.snet1' || true
-               terraform state rm 'module.vir_net.azurerm_network_security_group.nsg' || true
-               terraform state rm 'module.vir_net.azurerm_subnet_network_security_group_association.nsg_association' || true
-               terraform state rm 'module.vir_net.azurerm_subnet_network_security_group_association.nsg_association1' || true
-             
-               for orphan in $(echo "$ORPHANS" | grep -E "module\.vir_net\."); do
-                 terraform state rm "$orphan" || true
-               done
-             
-               echo "Orphans removed—state cleaned. Re-init to sync."
-               terraform init -backend-config="key=${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfstate"  
-             else
-               echo "No orphans detected—state clean."
-             fi   
+           if [ ! -z "$ORPHANS" ]; then
+             echo "Found orphans: $ORPHANS"
+             echo "Cleaning state references (resources untouched)..."
+
+             safe_rm() {
+               local target="$1"
+               if terraform state show "$target" > /dev/null 2>&1; then
+                 terraform state rm "$target"
+                 echo "Removed: $target"
+               else
+                 echo "Skipped (already gone): $target"
+               fi
+             }
+
+             safe_rm 'module.vir_net.azurerm_subnet.snet'
+             safe_rm 'module.vir_net.azurerm_subnet.snet1'
+             safe_rm 'module.vir_net.azurerm_network_security_group.nsg'
+             safe_rm 'module.vir_net.azurerm_subnet_network_security_group_association.nsg_association'
+             safe_rm 'module.vir_net.azurerm_subnet_network_security_group_association.nsg_association1'
+             safe_rm 'module.vir_net.azurerm_virtual_network.vnet'
+
+             for orphan in $(echo "$ORPHANS" | grep -E "module\.vir_net\." | sort -u); do 
+               safe_rm "$orphan"
+             done
+
+             echo "Orphans cleaned—state synced."
+             terraform init -backend-config="key=${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfstate"
+           else
+             echo "No orphans detected—state clean."
+           fi 
 
        - name: Terraform Validate
          if: github.event.inputs.terraform_action == 'validate'
