@@ -13,19 +13,20 @@
     - name: List risky inbound 'Allow' rules from the Internet
       debug:
         msg: |
-          WARNING: NSG {{ item.security_group.name }} - Rule {{ item.name }} (Priority {{ item.priority }})
-          allows {{ item.access | lower }} {{ item.protocol }} from {{ item.source_address_prefix }}
-          to {{ item.destination_port_range }} on {{ item.destination_address_prefix }}
-          (Direction: {{ item.direction }})
-      loop: "{{ nsg_info.security_groups | default([]) | subelements(['security_rules']) | selectattr('direction', 'equalto', 'Inbound') | list }}"
+          CRITICAL WARNING: NSG {{ item.0.name }} - Rule {{ item.1.name }} (Priority {{ item.1.priority }})
+          allows {{ item.1.access | lower }} {{ item.1.protocol }} traffic from {{ item.1.source_address_prefix }}
+          to ports {{ item.1.destination_port_range }} on {{ item.1.destination_address_prefix }}
+          (Direction: {{ item.1.direction }})
+          RECOMMENDATION: Restrict source to specific IPs (e.g., bastion/VPN) and ports (e.g., 22/443).
+      loop: "{{ nsg_info.security_groups | default([]) | subelements(['rules']) | selectattr('1.direction', 'equalto', 'Inbound') | list }}"
       loop_control:
-        label: "{{ item.1.name }}"
+        label: "{{ item.1.name }} (in {{ item.0.name }})"
       when:
         - item.1.access == 'Allow'
         - item.1.source_address_prefix == '*'
-        - item.1.destination_port_range == '*'  # Catches 'Any' ports
+        - item.1.destination_port_range == '*'
 
     - name: Summary - No risky inbound rules found
       debug:
         msg: "SUCCESS: No open inbound 'Allow' rules from Internet detected in NSGs."
-      when: not (nsg_info.security_groups | default([]) | subelements(['security_rules']) | selectattr('direction', 'equalto', 'Inbound') | selectattr('access', 'equalto', 'Allow') | selectattr('source_address_prefix', 'equalto', '*') | selectattr('destination_port_range', 'equalto', '*') | list)
+      when: not (nsg_info.security_groups | default([]) | subelements(['rules']) | selectattr('1.direction', 'equalto', 'Inbound') | selectattr('1.access', 'equalto', 'Allow') | selectattr('1.source_address_prefix', 'equalto', '*') | selectattr('1.destination_port_range', 'equalto', '*') | list)
