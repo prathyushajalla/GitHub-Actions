@@ -4,8 +4,9 @@ module "route_server" {
   rgname      = data.azurerm_resource_group.RG.name
   location    = data.azurerm_resource_group.RG.location
   rs_prefixes = var.rs_prefixes
-}
 
-providers = {
+  providers = {
     azurerm = azurerm # This passes the parent provider to the child
   }
+}
+
