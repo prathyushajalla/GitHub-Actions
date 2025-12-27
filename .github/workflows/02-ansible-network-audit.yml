@@ -15,7 +15,7 @@ jobs:
           pip install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements.txt
       - name: Execute Network Audit Playbook
         run: |
-          ansible-playbook ./Ansible/network_audit.yml -e "ansible_python_interpreter=$(which python3)" -vvv
+          ansible-playbook ./Ansible/network_audit.yml -e "ansible_python_interpreter=$(which python3)"
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
