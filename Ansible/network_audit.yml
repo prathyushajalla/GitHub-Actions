@@ -7,18 +7,25 @@
     - name: Get NSG facts for Central US
       azure.azcollection.azure_rm_securitygroup_info:
         resource_group: "Dev-USC-RG"
-        auth_source: auto  # Defaults to SDK chain (picks OIDC from env)
+        auth_source: auto
       register: nsg_info
 
-    - name: List all 'Allow' rules from the Internet
+    - name: List risky inbound 'Allow' rules from the Internet
       debug:
-        msg: "WARNING: {{ item.name }} allows open access from {{ item.source_address_prefix }}"
-      loop: "{{ nsg_info.security_groups[0].rules | default([]) }}"
+        msg: |
+          WARNING: NSG {{ item.security_group.name }} - Rule {{ item.name }} (Priority {{ item.priority }})
+          allows {{ item.access | lower }} {{ item.protocol }} from {{ item.source_address_prefix }}
+          to {{ item.destination_port_range }} on {{ item.destination_address_prefix }}
+          (Direction: {{ item.direction }})
+      loop: "{{ nsg_info.security_groups | default([]) | subelements(['security_rules']) | selectattr('direction', 'equalto', 'Inbound') | list }}"
+      loop_control:
+        label: "{{ item.1.name }}"
       when:
-        - item.access == 'Allow'
-        - item.source_address_prefix == '*'
+        - item.1.access == 'Allow'
+        - item.1.source_address_prefix == '*'
+        - item.1.destination_port_range == '*'  # Catches 'Any' ports
 
-    - name: Summary - No open Internet Allow rules found
+    - name: Summary - No risky inbound rules found
       debug:
-        msg: "SUCCESS: No open 'Allow' rules from Internet detected in NSGs."
-      when: not (nsg_info.security_groups[0].rules | default([]) | selectattr('access', 'equalto', 'Allow') | selectattr('source_address_prefix', 'equalto', '*') | list)
+        msg: "SUCCESS: No open inbound 'Allow' rules from Internet detected in NSGs."
+      when: not (nsg_info.security_groups | default([]) | subelements(['security_rules']) | selectattr('direction', 'equalto', 'Inbound') | selectattr('access', 'equalto', 'Allow') | selectattr('source_address_prefix', 'equalto', '*') | selectattr('destination_port_range', 'equalto', '*') | list)
