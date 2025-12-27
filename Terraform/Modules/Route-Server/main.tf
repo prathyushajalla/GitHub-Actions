@@ -13,7 +13,7 @@ terraform {
 
 resource "azurerm_subnet" "rs_subnet" {
   name                 = "RouteServerSubnet"
-  virtual_network_name = var.vnetname
+  virtual_network_name = var.vnetname.name
   resource_group_name  = var.rgname
   address_prefixes     = var.rs_prefixes
 }
