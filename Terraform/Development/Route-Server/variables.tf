@@ -10,6 +10,7 @@ variable "rs_prefixes" {
   type = list(string)
 }
 
-variable "hub_rs_pip_name" {
-  type = string
+variable "location" {
+  type    = string
+  default = "Central US"
 }
