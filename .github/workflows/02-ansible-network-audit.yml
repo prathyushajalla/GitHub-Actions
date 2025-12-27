@@ -2,6 +2,7 @@ name: Ansible Network Security Audits
 run-name: Ansible Security Audit Deployment by ${{ github.actor }} 🚀
 on:
   workflow_dispatch:
+
 jobs:
   Ansible-Audit:
     name: 'Run Security Audit'
@@ -10,20 +11,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Azure Python SDK
+      - name: Install Azure Dependencies
         run: |
-          ansible-galaxy collection install azure.azcollection -p ./collections
-          pip install -r ./collections/ansible_collections/azure/azcollection/requirements-azure.txt
-
-      - name: Install Azure Collection
-        run: ansible-galaxy collection install azure.azcollection
+          ansible-galaxy collection install azure.azcollection
+          pip install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
 
       - name: Execute Network Audit Playbook
         run: |
-          export ANSIBLE_COLLECTIONS_PATH=./collections
           ansible-playbook ./Ansible/network_audit.yml -e "ansible_python_interpreter=$(which python3)"
         env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_SECRET: ${{ secrets.AZURE_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
