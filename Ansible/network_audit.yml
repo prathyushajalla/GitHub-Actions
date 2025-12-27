@@ -7,10 +7,7 @@
     - name: Get NSG facts for Central US
       azure.azcollection.azure_rm_securitygroup_info:
         resource_group: "Dev-USC-RG"
-        client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') | trim }}"
-        secret: "{{ lookup('env', 'AZURE_CLIENT_SECRET') | trim }}"
-        tenant: "{{ lookup('env', 'AZURE_TENANT_ID') | trim }}"
-        subscription_id: "{{ lookup('env', 'AZURE_SUBSCRIPTION_ID') | trim }}"
+        auth_source: env
       register: nsg_info
 
     - name: List all 'Allow' rules from the Internet

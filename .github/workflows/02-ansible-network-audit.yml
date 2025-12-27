@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Azure Dependencies
         run: |
-          ansible-galaxy collection install azure.azcollection --force
+          ansible-galaxy collection install azure.azcollection==2.5.0 --force
           pip install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements.txt
       - name: Execute Network Audit Playbook
         run: |
@@ -19,5 +19,6 @@ jobs:
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}  # Alias for secret
+          AZURE_TENANT: ${{ secrets.AZURE_TENANT_ID }}      # Alias for tenant
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
