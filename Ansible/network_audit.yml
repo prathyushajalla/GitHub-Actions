@@ -18,7 +18,7 @@
           to ports {{ item.1.destination_port_range }} on {{ item.1.destination_address_prefix }}
           (Direction: {{ item.1.direction }})
           RECOMMENDATION: Restrict source to specific IPs (e.g., bastion/VPN) and ports (e.g., 22/443).
-      loop: "{{ nsg_info.security_groups | default([]) | subelements(['rules']) | selectattr('1.direction', 'equalto', 'Inbound') | list }}"
+      loop: "{{ nsg_info.securitygroups | default([]) | subelements(['rules']) | selectattr('1.direction', 'equalto', 'Inbound') | list }}"
       loop_control:
         label: "{{ item.1.name }} (in {{ item.0.name }})"
       when:
@@ -29,4 +29,4 @@
     - name: Summary - No risky inbound rules found
       debug:
         msg: "SUCCESS: No open inbound 'Allow' rules from Internet detected in NSGs."
-      when: not (nsg_info.security_groups | default([]) | subelements(['rules']) | selectattr('1.direction', 'equalto', 'Inbound') | selectattr('1.access', 'equalto', 'Allow') | selectattr('1.source_address_prefix', 'equalto', '*') | selectattr('1.destination_port_range', 'equalto', '*') | list)
+      when: not (nsg_info.securitygroups | default([]) | subelements(['rules']) | selectattr('1.direction', 'equalto', 'Inbound') | selectattr('1.access', 'equalto', 'Allow') | selectattr('1.source_address_prefix', 'equalto', '*') | selectattr('1.destination_port_range', 'equalto', '*') | list)
