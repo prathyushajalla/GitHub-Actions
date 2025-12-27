@@ -7,7 +7,7 @@
     - name: Get NSG facts for Central US
       azure.azcollection.azure_rm_securitygroup_info:
         resource_group: "Dev-USC-RG"
-        auth_source: env  # Use env vars directly (bypasses explicit param bugs)
+        auth_source: auto  # Defaults to SDK chain (picks OIDC from env)
       register: nsg_info
 
     - name: List all 'Allow' rules from the Internet

@@ -6,19 +6,25 @@ jobs:
   Ansible-Audit:
     name: 'Run Security Audit'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for OIDC token issuance
+      contents: read   # For checkout
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Login to Azure (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
       - name: Install Azure Dependencies
         run: |
-          ansible-galaxy collection install azure.azcollection==2.5.0 --force
+          ansible-galaxy collection install azure.azcollection --force
           pip install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements.txt
+
       - name: Execute Network Audit Playbook
         run: |
           ansible-playbook ./Ansible/network_audit.yml -e "ansible_python_interpreter=$(which python3)"
-        env:
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          AZURE_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}  # Alias for secret
-          AZURE_TENANT: ${{ secrets.AZURE_TENANT_ID }}      # Alias for tenant
-          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
