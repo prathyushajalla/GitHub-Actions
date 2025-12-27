@@ -4,16 +4,6 @@
   connection: local
   gather_facts: no
   tasks:
-    - name: Debug secret length  # TEMP: Remove after fixing
-      debug:
-        msg: "AZURE_CLIENT_SECRET length: {{ (lookup('env', 'AZURE_CLIENT_SECRET') | trim | length) }} (local was 40)"
-        verbosity: 0
-
-    - name: Debug secret hash  # TEMP: Remove after fixing
-      debug:
-        msg: "AZURE_CLIENT_SECRET hash: {{ (lookup('env', 'AZURE_CLIENT_SECRET') | trim | hash('md5')) }} (local: 57f113ae0b692e55b510d02692927a16)"
-        verbosity: 0
-
     - name: Get NSG facts for Central US
       azure.azcollection.azure_rm_securitygroup_info:
         resource_group: "Dev-USC-RG"
@@ -30,3 +20,8 @@
       when:
         - item.access == 'Allow'
         - item.source_address_prefix == '*'
+
+    - name: Summary - No open Internet Allow rules found
+      debug:
+        msg: "SUCCESS: No open 'Allow' rules from Internet detected in NSGs."
+      when: not (nsg_info.security_groups[0].rules | default([]) | selectattr('access', 'equalto', 'Allow') | selectattr('source_address_prefix', 'equalto', '*') | list)
