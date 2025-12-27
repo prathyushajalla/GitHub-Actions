@@ -8,9 +8,7 @@ terraform {
 }
 
 provider "azurerm" {
-  features {
-    azurerm = azurerm
-  }
+  features {}
 }
 resource "azurerm_resource_group" "RG" {
   name     = var.rgname

@@ -4,3 +4,7 @@ module "rg" {
   rgname   = var.rgname
   location = var.location
 }
+
+providers = {
+    azurerm = azurerm # This passes the parent provider to the child
+  }

@@ -11,3 +11,7 @@ module "vir_net" {
   subnet_name1       = var.subnet_name1
   subnet_address1    = var.subnet_address1
 }
+
+providers = {
+    azurerm = azurerm # This passes the parent provider to the child
+  }
