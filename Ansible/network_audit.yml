@@ -4,19 +4,24 @@
   connection: local
   gather_facts: no
   tasks:
+    - name: Debug secret length  # TEMP: Remove after fixing
+      debug:
+        msg: "AZURE_CLIENT_SECRET length: {{ (lookup('env', 'AZURE_CLIENT_SECRET') | trim | length) }} (local was 40)"
+        verbosity: 0  # Always shows, even without -vvv
+
     - name: Get NSG facts for Central US
       azure.azcollection.azure_rm_securitygroup_info:
         resource_group: "Dev-USC-RG"
-        client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
-        secret: "{{ lookup('env', 'AZURE_CLIENT_SECRET') }}"
-        tenant: "{{ lookup('env', 'AZURE_TENANT_ID') }}"
-        subscription_id: "{{ lookup('env', 'AZURE_SUBSCRIPTION_ID') }}"
+        client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') | trim }}"
+        secret: "{{ lookup('env', 'AZURE_CLIENT_SECRET') | trim }}"
+        tenant: "{{ lookup('env', 'AZURE_TENANT_ID') | trim }}"
+        subscription_id: "{{ lookup('env', 'AZURE_SUBSCRIPTION_ID') | trim }}"
       register: nsg_info
 
     - name: List all 'Allow' rules from the Internet
       debug:
         msg: "WARNING: {{ item.name }} allows open access from {{ item.source_address_prefix }}"
-      loop: "{{ nsg_info.security_groups[0].rules }}"
+      loop: "{{ nsg_info.security_groups[0].rules | default([]) }}"
       when:
         - item.access == 'Allow'
         - item.source_address_prefix == '*'
