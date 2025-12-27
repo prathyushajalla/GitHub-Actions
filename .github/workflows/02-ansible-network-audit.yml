@@ -14,9 +14,7 @@ jobs:
       - name: Install Azure Dependencies
         run: |
           ansible-galaxy collection install azure.azcollection --force
-          COLLECTION_PATH=$(ansible-config dump | grep COLLECTIONS_PATHS | cut -d '=' -f2 | tr -d ' ' | cut -d ':' -f1 | sed "s|~|$HOME|")
-          REQUIREMENTS_FILE="$COLLECTION_PATH/ansible_collections/azure/azcollection/requirements-azure.txt"
-          pip install -r "$REQUIREMENTS_FILE"
+          pip install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
 
       - name: Execute Network Audit Playbook
         run: |
