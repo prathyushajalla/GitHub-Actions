@@ -8,7 +8,9 @@ terraform {
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    azurerm = azurerm
+  }
 }
 
 resource "azurerm_subnet" "rs_subnet" {
