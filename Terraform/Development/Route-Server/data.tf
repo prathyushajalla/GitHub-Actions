@@ -1,7 +1,7 @@
 data "azurerm_resource_group" "RG" {
-  name     = var.rgname
+  name = var.rgname
 }
 
 data "azurerm_virtual_network" "vnet" {
-  name     = var.vnet_name
+  name = var.vnet_name
 }
