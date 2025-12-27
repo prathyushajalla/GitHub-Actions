@@ -7,9 +7,9 @@ terraform {
   }
 }
 
-#provider "azurerm" {
-#  features {}
-#}
+provider "azurerm" {
+  features {}
+}
 
 resource "azurerm_subnet" "rs_subnet" {
   name                 = "RouteServerSubnet"
