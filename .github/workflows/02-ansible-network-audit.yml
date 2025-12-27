@@ -1,5 +1,5 @@
 name: Ansible Network Security Audits
-run-name: Ansible Security Audit Deployment by ${{ github.actor }} 🚀
+run-name: Ansible Security Audit Development by ${{ github.actor }} 🚀
 on:
   workflow_dispatch:
 
@@ -13,12 +13,11 @@ jobs:
 
       - name: Install Azure Dependencies
         run: |
-          ansible-galaxy collection install azure.azcollection -p ./azure_requirements --force
-          pip install -r ./azure_requirements/ansible_collections/azure/azcollection/requirements-azure.txt
+          pip install azure-cli azure-mgmt-resource azure-mgmt-network azure-identity
+          ansible-galaxy collection install azure.azcollection --force
 
       - name: Execute Network Audit Playbook
         run: |
-          export ANSIBLE_COLLECTIONS_PATH=./azure_requirements
           ansible-playbook ./Ansible/network_audit.yml -e "ansible_python_interpreter=$(which python3)"
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
