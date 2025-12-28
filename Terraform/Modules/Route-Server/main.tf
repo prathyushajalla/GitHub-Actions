@@ -15,7 +15,7 @@ resource "azurerm_subnet" "rs_subnet" {
   name                 = "RouteServerSubnet"
   virtual_network_name = var.virtual_network_name
   resource_group_name  = var.rgname
-  address_prefixes     = [cidrsubnet(var.vnet_address_space, 11, 2047)]
+  address_prefixes     = [cidrsubnet(var.vnet_address_space, 10, 1023)]
 }
 
 resource "azurerm_public_ip" "rs_pip" {
