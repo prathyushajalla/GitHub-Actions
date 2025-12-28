@@ -1,3 +1,3 @@
 env      = "dev"
 location = "eastus"
-asn = 65001
+asn      = 65001

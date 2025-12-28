@@ -1,3 +1,3 @@
 env      = "dev"
 location = "centralus"
-asn = 65003
+asn      = 65003
