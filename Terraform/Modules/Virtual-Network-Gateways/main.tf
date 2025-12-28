@@ -58,7 +58,7 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "AzureBastion"  #or your IP
+    source_address_prefix      = "ServiceTag:AzureBastion"  #or your IP
     destination_address_prefix = "*"
   }
 
@@ -114,7 +114,7 @@ resource "azurerm_public_ip" "gateway_pip" {
   name                = "${var.env}-${var.location}-vng-pip"
   location            = var.location
   resource_group_name = var.rgname
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
   sku                 = "Standard"
 
   tags = {
