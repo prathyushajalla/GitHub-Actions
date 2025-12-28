@@ -1,10 +1,7 @@
 module "rg" {
   source = "../../Modules/Resource-Group/"
 
-  rgname   = var.rgname
-  location = var.location
+  env                 = var.env
+  location            = var.location
+  vnet_address_space  = var.vnet_address_space
 }
-
-providers = {
-    azurerm = azurerm # This passes the parent provider to the child
-  }

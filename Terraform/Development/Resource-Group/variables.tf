@@ -1,6 +1,10 @@
-variable "rgname" {
+variable "env" {
   type = string
 }
 variable "location" {
   type = string
+}
+
+variable "vnet_address_space" {
+  type = list(string)
 }

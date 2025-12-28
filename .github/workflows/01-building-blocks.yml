@@ -9,7 +9,7 @@ on:
         type: choice
         options:
           - Resource-Group
-          - Virtual-Network
+          - Virtual-Network-Peering-Peering-Peering
           - Route-Server
 
       environment:

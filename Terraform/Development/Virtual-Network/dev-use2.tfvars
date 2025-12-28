@@ -1,9 +1,0 @@
-nsgname            = "dev-eastus2-nsg"
-rgname             = "Dev-USE2-RG"
-security_rule_name = "dev-eastus2-sg-rule"
-vnet_name          = "dev-eastus2-vnet"
-vnet_address_space = ["11.0.0.0/16"]
-subnet_name        = "dev-eastus2-subnet"
-subnet_address     = ["11.0.1.0/24"]
-subnet_name1       = "dev-eastus2-subnet1"
-subnet_address1    = ["11.0.2.0/24"]
