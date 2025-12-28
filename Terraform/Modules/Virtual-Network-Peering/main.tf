@@ -19,7 +19,7 @@ resource "azurerm_virtual_network_peering" "hub_to_spoke" {
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
   allow_gateway_transit        = true  # Enables BGP propagation
-  use_remote_gateways          = true
+  use_remote_gateways          = false
 }
 
 resource "azurerm_virtual_network_peering" "spoke_to_hub" {
@@ -29,6 +29,6 @@ resource "azurerm_virtual_network_peering" "spoke_to_hub" {
   remote_virtual_network_id    = "/subscriptions/27d7b904-9129-4415-b01d-d5550f6115d5/resourceGroups/dev-centralus-RG/providers/Microsoft.Network/virtualNetworks/dev-centralus-vnet"
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
-  allow_gateway_transit        = true  # Enables BGP propagation
+  allow_gateway_transit        = false  # Enables BGP propagation
   use_remote_gateways          = true
 }
