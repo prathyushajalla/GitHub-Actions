@@ -58,7 +58,7 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "ServiceTag:AzureBastion"  #or your IP
+    source_address_prefix      = ["AzureBastion"]  #or your IP
     destination_address_prefix = "*"
   }
 
