@@ -6,3 +6,7 @@ variable "vnet_address_space" {
 variable "location" {}
 variable "env" {}
 variable "asn" {}
+variable "hub_cidr"{
+  type = string
+  default = "10.0.0.0/16"
+}
