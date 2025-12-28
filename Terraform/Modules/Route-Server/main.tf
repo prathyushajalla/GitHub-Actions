@@ -7,15 +7,37 @@ terraform {
   }
 }
 
-#provider "azurerm" {
-#  features {}
-#}
+provider "azurerm" {
+  features {}
+}
 
 resource "azurerm_subnet" "rs_subnet" {
   name                 = "RouteServerSubnet"
   virtual_network_name = var.vnetname.name
   resource_group_name  = var.rgname
   address_prefixes     = var.rs_prefixes
+}
+
+resource "azurerm_network_security_group" "nsg" {
+  name                = "${var.env}-${var.location}-nsg"
+  location            = var.location
+  resource_group_name = "${var.env}-${var.location}-RG_name"
+
+  security_rule {
+    name                       = "${var.env}-${var.location}-security-rule"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  tags = {
+    environment = "Development"
+  }
 }
 
 resource "azurerm_public_ip" "rs_pip" {
