@@ -13,31 +13,9 @@ provider "azurerm" {
 
 resource "azurerm_subnet" "rs_subnet" {
   name                 = "RouteServerSubnet"
-  virtual_network_name = var.virtual_network_name.name
+  virtual_network_name = var.virtual_network_name
   resource_group_name  = var.rgname
-  address_prefixes     = [var.address_prefixes]
-}
-
-resource "azurerm_network_security_group" "nsg" {
-  name                = "${var.env}-${var.location}-nsg"
-  location            = var.location
-  resource_group_name = var.rgname
-
-  security_rule {
-    name                       = "${var.env}-${var.location}-security-rule"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  tags = {
-    environment = "Development"
-  }
+  address_prefixes     = [cidrsubnet(var.vnet_address_space, 11, 2047)]
 }
 
 resource "azurerm_public_ip" "rs_pip" {
@@ -46,6 +24,10 @@ resource "azurerm_public_ip" "rs_pip" {
   location            = var.location
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  tags = {
+    environment = "Development"
+  }
 }
 
 resource "azurerm_route_server" "hub_rs" {
@@ -56,13 +38,17 @@ resource "azurerm_route_server" "hub_rs" {
   public_ip_address_id             = azurerm_public_ip.rs_pip.id
   subnet_id                        = azurerm_subnet.rs_subnet.id
   branch_to_branch_traffic_enabled = true
+
+  tags = {
+    environment = "Development"
+  }
 }
 
 resource "azurerm_route_server_bgp_connection" "hub_to_spoke1" {
   name           = "hub-to-spoke1-bgp"
   route_server_id = azurerm_route_server.hub_rs.id
 
-  peer_ip        = "10.1.1.1"  # Gateway IP in Spoke 1 subnet
+  peer_ip        = "11.0.255.254"  # Gateway IP in Spoke 1 subnet
   peer_asn       = 65001       # Spoke 1 ASN
 }
 
@@ -70,6 +56,6 @@ resource "azurerm_route_server_bgp_connection" "hub_to_spoke2" {
   name           = "hub-to-spoke2-bgp"
   route_server_id = azurerm_route_server.hub_rs.id
 
-  peer_ip        = "10.2.1.1"  # Spoke 2
+  peer_ip        = "12.0.255.254"  # Spoke 2
   peer_asn       = 65002
 }

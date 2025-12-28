@@ -1,8 +1,8 @@
-data "azurerm_resource_group" "RG" {
-  name = var.rgname
+data "azurerm_resource_group" "rg" {
+  name = "${var.env}-${var.location}-RG"
 }
 
 data "azurerm_virtual_network" "vnet" {
-  name                = var.vnet_name
-  resource_group_name = var.rgname
+  resource_group_name = "${var.env}-${var.location}-RG"
+  name                = "${var.env}-${var.location}-vnet"
 }
