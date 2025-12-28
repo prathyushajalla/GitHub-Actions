@@ -1,2 +1,2 @@
-env                = "dev"
-location           = "usc"
+env      = "dev"
+location = "usc"

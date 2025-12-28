@@ -1,2 +1,2 @@
-env                = "dev"
-location           = "use2"
+env      = "dev"
+location = "use2"
