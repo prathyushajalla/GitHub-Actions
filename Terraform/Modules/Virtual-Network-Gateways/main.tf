@@ -49,19 +49,6 @@ resource "azurerm_network_security_group" "nsg" {
     destination_address_prefix = "*"
   }
 
-  # Allow SSH (22) from bastion/management IPs (inbound)
-  security_rule {
-    name                       = "${var.env}-${var.location}-allow-ssh-inbound"
-    priority                   = 300
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefix      = "AzureBastion"  #or your IP
-    destination_address_prefix = "*"
-  }
-
   # Catch-all Deny Inbound (evaluates last)
   security_rule {
     name                       = "${var.env}-${var.location}-deny-all-inbound"
