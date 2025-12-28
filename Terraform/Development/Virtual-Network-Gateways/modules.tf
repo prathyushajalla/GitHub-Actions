@@ -3,7 +3,7 @@ module "gateways" {
   virtual_network_name = data.azurerm_virtual_network.vnet.name
   rgname               = data.azurerm_resource_group.rg.name
   location             = data.azurerm_resource_group.rg.location
-  vnet_address_space   = data.azurerm_virtual_network.vnet.address_space
+  vnet_address_space   = data.azurerm_virtual_network.vnet.address_space[0]
   env                  = var.env
   asn                  = var.asn
 }
