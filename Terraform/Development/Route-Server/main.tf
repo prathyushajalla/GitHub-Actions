@@ -1,13 +1,3 @@
-moved {
-  from = module.rg.azurerm_resource_group.rg
-  to   = data.azurerm_resource_group.rg
-}
-
-moved {
-  from = module.vir_net.azurerm_virtual_network.vnet
-  to   = data.azurerm_virtual_network.vnet
-}
-
 terraform {
   required_providers {
     azurerm = {
