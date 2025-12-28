@@ -15,7 +15,7 @@ resource "azurerm_subnet" "gateway_subnet" {
   name                 = "GatewaySubnet"
   resource_group_name  = var.rgname
   virtual_network_name = var.virtual_network_name
-  address_prefixes     = [cidrsubnet(var.vnet_address_space, 3, 255)]  # e.g., 11.0.255.0/27 from 11.0.0.0/16
+  address_prefixes     = [cidrsubnet(var.vnet_address_space, 11, 2040)]  # e.g., 11.0.255.0/27 from 11.0.0.0/16
 }
 
 resource "azurerm_public_ip" "gateway_pip" {
