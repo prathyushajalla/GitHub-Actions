@@ -4,4 +4,5 @@ module "route_server" {
   rgname               = data.azurerm_resource_group.rg.name
   location             = data.azurerm_resource_group.rg.location
   env                  = var.env
+  vnet_address_space   = data.azurerm_virtual_network.vnet.address_space[0]
 }
