@@ -14,7 +14,7 @@ provider "azurerm" {
 resource "azurerm_virtual_network_peering" "hub_to_spoke" {
   name                         = "dev-centralus-RG-hub-to-${var.env}-${var.location}-RG-spoke" #HUB always has to be Central US for this architecture
   resource_group_name          = "dev-centralus-RG"
-  virtual_network_name         = "dev-usc-vnet"
+  virtual_network_name         = "dev-centralus-vnet"
   remote_virtual_network_id    = var.remote_virtual_network_id
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
@@ -30,5 +30,5 @@ resource "azurerm_virtual_network_peering" "spoke_to_hub" {
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
   allow_gateway_transit        = false  # Enables BGP propagation
-  use_remote_gateways          = true
+  use_remote_gateways          = false
 }
