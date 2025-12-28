@@ -9,8 +9,9 @@ on:
         type: choice
         options:
           - Resource-Group
-          - Virtual-Network-Peering
+          - Virtual-Network-Gateways
           - Route-Server
+          - Virtual-Network-Peering
 
       environment:
         description: 'Select the Environment'

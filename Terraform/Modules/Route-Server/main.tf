@@ -13,15 +13,15 @@ provider "azurerm" {
 
 resource "azurerm_subnet" "rs_subnet" {
   name                 = "RouteServerSubnet"
-  virtual_network_name = var.vnetname.name
+  virtual_network_name = var.virtual_network_name.name
   resource_group_name  = var.rgname
-  address_prefixes     = var.rs_prefixes
+  address_prefixes     = [var.address_prefixes]
 }
 
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.env}-${var.location}-nsg"
   location            = var.location
-  resource_group_name = "${var.env}-${var.location}-RG_name"
+  resource_group_name = var.rgname
 
   security_rule {
     name                       = "${var.env}-${var.location}-security-rule"
@@ -41,7 +41,7 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 resource "azurerm_public_ip" "rs_pip" {
-  name                = "${var.rgname}-${var.location}-rs-pip"
+  name                = "${var.env}-${var.location}-rs-pip"
   resource_group_name = var.rgname
   location            = var.location
   allocation_method   = "Static"
@@ -49,7 +49,7 @@ resource "azurerm_public_ip" "rs_pip" {
 }
 
 resource "azurerm_route_server" "hub_rs" {
-  name                             = "${var.rgname}-${var.location}-hub-rs"
+  name                             = "${var.env}-${var.location}-hub-rs"
   resource_group_name              = var.rgname
   location                         = var.location
   sku                              = "Standard"

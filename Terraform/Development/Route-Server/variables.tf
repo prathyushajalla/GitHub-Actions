@@ -7,10 +7,13 @@ variable "vnet_name" {
 }
 
 variable "rs_prefixes" {
-  type = list(string)
+  type = string
 }
 
 variable "location" {
   type    = string
-  default = "Central US"
+}
+
+variable "env" {
+  type = string
 }
