@@ -1,2 +1,2 @@
 env      = "dev"
-location = "usc"
+location = "centralus"
