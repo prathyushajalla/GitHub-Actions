@@ -58,7 +58,7 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = ["AzureBastion"]  #or your IP
+    source_address_prefix      = "AzureBastion"  #or your IP
     destination_address_prefix = "*"
   }
 
@@ -103,11 +103,6 @@ resource "azurerm_network_security_group" "nsg" {
   tags = {
     environment = "Development"
   }
-}
-
-resource "azurerm_subnet_network_security_group_association" "gateway_nsg_assoc" {
-  subnet_id                 = azurerm_subnet.gateway_subnet.id
-  network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
 resource "azurerm_public_ip" "gateway_pip" {
