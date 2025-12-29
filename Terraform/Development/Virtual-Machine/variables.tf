@@ -15,7 +15,3 @@ variable "admin_password" {
   type    = string
   default = "Azure@123"
 }
-
-variable "vm_count" {
-  type = number
-}

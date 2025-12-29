@@ -7,5 +7,4 @@ variable "vnet_address_space" {
 }
 variable "admin_username" {}
 variable "admin_password" {}
-variable "vm_count" {}
 variable "network_security_group_id" {}

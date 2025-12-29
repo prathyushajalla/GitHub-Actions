@@ -12,7 +12,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_subnet" "vm_subnet" {
-  name                 = "${var.env}-${var.location}-subnet-${count.index}"
+  name                 = "${var.env}-${var.location}-subnet"
   resource_group_name  = var.rgname
   virtual_network_name = var. virtual_network_name
 
@@ -21,8 +21,7 @@ resource "azurerm_subnet" "vm_subnet" {
 }
 
 resource "azurerm_network_interface" "vm_nic" {
-  count               = var.vm_count
-  name                = "${var.env}-${var.location}-vm-nic-${count.index}"
+  name                = "${var.env}-${var.location}-vm-nic"
   location            = var.location
   resource_group_name = var.rgname
 
@@ -35,13 +34,11 @@ resource "azurerm_network_interface" "vm_nic" {
 
 # Use the ID from the data lookup for your VM association
 resource "azurerm_network_interface_security_group_association" "vm_nic_assoc" {
-  count                     = var.vm_count
-  network_interface_id      = azurerm_network_interface.vm_nic[count.index].id
+  network_interface_id      = azurerm_network_interface.vm_nic.id
   network_security_group_id = var.network_security_group_id
 }
 resource "azurerm_linux_virtual_machine" "vm" {
-  count                           = var.vm_count
-  name                            = "${var.env}-${var.location}-vm-${count.index}"
+  name                            = "${var.env}-${var.location}-vm"
   resource_group_name             = var.rgname
   location                        = var.location
   size                            = "Standard_B1s" # Cost-effective for testing
@@ -49,7 +46,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   admin_password                  = var.admin_password
   disable_password_authentication = false # Password-based for quick testing
 
-  network_interface_ids = [ azurerm_network_interface.vm_nic[count.index].id ]
+  network_interface_ids = [ azurerm_network_interface.vm_nic.id ]
 
   os_disk {
     caching              = "ReadWrite"
