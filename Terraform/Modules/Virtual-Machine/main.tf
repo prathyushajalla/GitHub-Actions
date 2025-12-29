@@ -56,7 +56,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                            = "${var.env}-${var.location}-vm"
   resource_group_name             = var.rgname
   location                        = var.location
-  size                            = "Standard_D2s_v3"
+  size                            = "Standard_L2as_v4"
   admin_username                  = var.admin_username
   admin_password                  = var.admin_password
   disable_password_authentication = false # Password-based for quick testing
@@ -65,7 +65,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   os_disk {
     caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
+    storage_account_type = "Premium_LRS"
   }
 
   source_image_reference {
