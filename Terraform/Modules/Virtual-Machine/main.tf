@@ -37,11 +37,26 @@ resource "azurerm_network_interface_security_group_association" "vm_nic_assoc" {
   network_interface_id      = azurerm_network_interface.vm_nic.id
   network_security_group_id = var.network_security_group_id
 }
+
+resource "azurerm_network_security_rule" "allow_ssh" {
+  name                        = "allow-ssh-22"
+  priority                    = 150
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = var.existing_resource_group_name
+  network_security_group_name = var.existing_security_group_name
+}
+
 resource "azurerm_linux_virtual_machine" "vm" {
   name                            = "${var.env}-${var.location}-vm"
   resource_group_name             = var.rgname
   location                        = var.location
-  size                            = "Standard_B1s" # Cost-effective for testing
+  size                            = "Standard_D2s_v3"
   admin_username                  = var.admin_username
   admin_password                  = var.admin_password
   disable_password_authentication = false # Password-based for quick testing
