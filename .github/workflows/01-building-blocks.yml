@@ -12,6 +12,7 @@ on:
           - Virtual-Network-Gateways
           - Route-Server
           - Virtual-Network-Peering
+          - Virtual-Machine
 
       environment:
         description: 'Select the Environment'
