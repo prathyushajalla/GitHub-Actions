@@ -95,6 +95,7 @@ resource "azurerm_linux_web_app" "webapp" {
   service_plan_id     = azurerm_service_plan.plan.id
 
   site_config {
+    always_on              = false
     vnet_route_all_enabled = true # Force all traffic through VNet
   }
 }
