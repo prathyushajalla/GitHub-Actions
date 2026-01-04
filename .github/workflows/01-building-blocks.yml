@@ -13,6 +13,7 @@ on:
           - Route-Server
           - Virtual-Network-Peering
           - Virtual-Machine
+          - Private-Link-App
 
       environment:
         description: 'Select the Environment'
@@ -148,6 +149,6 @@ jobs:
 
        - name: Terraform Destroy
          if: github.event.inputs.terraform_action == 'destroy'
-         run: | #Initialize with the specific region's state file & perform destroy using the environment's specific variables
+         run: | #Initialize with the specific region's state file & perform terraform destroy using the environment's specific variables
            terraform init -backend-config="key=${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfstate"
            terraform destroy -auto-approve -var-file="${{ github.event.inputs.environment }}-${{ github.event.inputs.region }}.tfvars"
